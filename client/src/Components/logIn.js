@@ -1,0 +1,313 @@
+import {
+  ButtonPersonalized,
+  CardPersonalized,
+  LinkPersonalized,
+} from "./customePersonalizedComponents";
+import React from "react";
+import { useState, useContext } from "react";
+import { useAuth } from "./context";
+import { Form, useFormik, resetForm } from "formik";
+import { DepositAuth } from "./deposit";
+import { WithdrawAuth } from "./withdraw";
+
+function Login() {
+  const [status, setStatus] = useState("");
+  const [balance, setBalance] = useState(0);
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const { login, user, logOut, setUser } = useAuth();
+  const ctx = useAuth();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+
+    onSubmit: (values) => {
+ 
+      var email = values.email;
+      var password = values.password;
+
+      setEmail(email);
+      setPassword(password);
+      console.log(values);
+
+      const url = `/account/login`;
+      console.log("after url");
+
+      const getUser = async () => {
+        try {
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+
+          const data = {
+            email: email,
+            password: password,
+          };
+
+          const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify(data),
+            redirect: "follow",
+          };
+          console.log("url:", url);
+          const response = await fetch(url, requestOptions);
+
+          if (response.status != 200) {
+            throw new Error(
+              `something went wrong, status code: ${response.status}`
+            );
+          }
+          const userData = await response.json();
+          return userData;
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+      (async () => {
+        const userData = await getUser();
+        if (userData) {
+          console.log("data updated:" + JSON.stringify(userData));
+          var name = userData.name; //it helps with the delay of usestate
+          var balance = userData.balance;
+          setStatus("");
+          setEmail(() => userData.email);
+          setPassword(() => userData.password);
+          setBalance(balance);
+          setName(name);
+          login(name, email, password, balance, user); //call firebase
+
+        //   alert("Account log in successful");
+
+          console.log("user info form:", name, email, balance, password);
+          console.log(
+            "user.name context here:",
+            user.name,
+            user.balance,
+            user.valAuth,
+            user.email,
+            user.password
+          );
+          clearForm();
+
+          return; //important
+        }
+
+        setStatus(
+          <>
+            <span className="alert alert-danger d-flex align-items-center">
+              {" "}
+              <p>
+                {" "}
+                Login failed: User or password not recognized. Please retry or
+                register for a new account if you're not already part of our
+                awesome Bank.
+              </p>
+            </span>
+          </>
+        );
+        setTimeout(() => setStatus(""), 3000);
+      })();
+    },
+
+    validate: (values) => {
+      let errors = {};
+
+      if (!values.password) {
+        errors.password = (
+          <span className="alert alert-danger d-flex align-items-center">
+            {" "}
+            <strong> Field required</strong>
+          </span>
+        );
+      } else if (
+        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
+          values.password
+        )
+      )
+        errors.password = (
+          <span className="alert alert-danger d-flex align-items-center">
+            {" "}
+            <strong>
+              {" "}
+              The password must contain minimum 8 Characters, One Uppercase, One
+              Lowercase, One Number and One Special Case Character
+            </strong>
+          </span>
+        );
+      if (!values.email) {
+        errors.email = (
+          <span className="alert alert-danger d-flex align-items-center">
+            {" "}
+            <strong> Field required</strong>
+          </span>
+        );
+      } else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+      ) {
+        errors.email = (
+          <span className="alert alert-danger d-flex align-items-center">
+            {" "}
+            <strong> This field should include a valid email address</strong>
+          </span>
+        );
+      }
+      return errors;
+    },
+  });
+
+  function clearForm() {
+    formik.resetForm();
+    setEmail("");
+    setPassword("");
+  }
+ console.log("user.valAuth:", user.valAuth)
+  return (
+    <>
+      <h6></h6>
+      {user.valAuth ? (
+        <CardPersonalized
+          header="Logged  in"
+          width="30"
+          nameButton="Save"
+          hdColor="dark"
+          textCenter="true"
+          status={status}
+          body={<LogInAuth name={name} balance={balance} />}
+        />
+      ) : (
+        <CardPersonalized
+          header="Log into your Account"
+          width="30"
+          nameButton="Save"
+          hdColor="dark"
+          textCenter="true"
+          status={status}
+          body={
+            <>
+              <form onSubmit={formik.handleSubmit}>
+                <strong>Email:</strong> <br />
+                <input
+                  className="form-control"
+                  type="text"
+                  name="email"
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
+                  id="email"
+                  placeholder="Enter email address"
+                ></input>{" "}
+                <br></br>
+                {formik.errors.email ? (
+                  <div className="error-validation">{formik.errors.email}</div>
+                ) : null}{" "}
+                <br></br>
+                <strong>Password:</strong> <br />
+                <input
+                  className="form-control"
+                  id="password"
+                  placeholder="Enter password"
+                  type="text"
+                  name="password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                ></input>{" "}
+                <br></br>
+                {formik.errors.password ? (
+                  <div className="error-validation">
+                    {formik.errors.password}
+                  </div>
+                ) : null}{" "}
+                <br></br>
+                <div className="container text-center">
+                  <div className="row">
+                    <div className="col">
+                      <ButtonPersonalized
+                        titleButton="Log In"
+                        type="submit"
+                        name="submitBtn"
+                        className="button"
+                      />
+                      <br />
+                      <div className="col">
+                        <LinkPersonalized
+                          titleButton="Forgot your password?"
+                          handleOnclick="#/login/"
+                        />
+                      </div>
+                      <div className="col">
+                        <LinkPersonalized
+                          titleButton="Sig In"
+                          handleOnclick="#/CreateAccount/"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </>
+          }
+        />
+      )}
+    </>
+  );
+}
+function LogInAuth(props) {
+  const { user, logOut } = useAuth();
+  console.log(
+    "user info form:",
+    props.name,
+    props.email,
+    props.balance,
+    props.password
+  );
+  console.log(
+    "user.name context:",
+    user.name,
+    user.balance,
+    user.valAuth,
+    user.email,
+    user.password
+  );
+  return (
+    <>
+      <h1>Hello {user.name}!</h1>
+      <p>Your current balance is:</p>
+      <br />
+      {/* I want to link this to balance context or prop variable */}
+      <h5>$ {user.balance}</h5>
+      <br />
+      <div className="row">
+        <div className="col">
+          <ButtonPersonalized
+            titleButton="Sing out"
+            handleOnclick={() => logOut()}
+          />
+          <div className="row">
+            <div className="col-sm-6 mb-3 mb-sm-0">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title"></h5>
+                  <DepositAuth />
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title"></h5>
+                  <WithdrawAuth />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Login;

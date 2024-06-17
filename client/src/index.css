@@ -1,0 +1,58 @@
+#logo {
+  font-family: "Racing Sans One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: xx-large;
+}
+
+nav {
+  font-family: "Finlandica", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: large;
+
+}
+
+span,h1,h2,h3,h4,h5,h6 {
+  font-family: "Finlandica", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+p {
+  font-family: "Finlandica", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+  
+
+
+/* 
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 400 to 700 */
+
+/* div {
+  font-family: "Finlandica", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: italic;
+} */
+
+html {
+  background-image: url("https://picsum.photos/1600/1100/?blur=2"); 
+  opacity: 1;
+}
+
+html::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgba(252, 250, 250, 0);
+}

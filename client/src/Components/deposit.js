@@ -1,6 +1,8 @@
 import {
   CardPersonalized,
-  ButtonPersonalized, LinkPersonalized, CardLogIn
+  ButtonPersonalized,
+  LinkPersonalized,
+  CardLogIn,
 } from "./customePersonalizedComponents";
 import React from "react";
 import { useState, useContext } from "react";
@@ -12,13 +14,9 @@ function Deposit() {
 
   return (
     <>
-      <p>Context share {JSON.stringify(ctx)}</p>
+      {/* <p>Context share {JSON.stringify(ctx)}</p> */}
 
-      {user.ValAuth ? (
-        <DepositAuth />
-      ) : (
-        <CardLogIn/>
-      )}
+      {user.valAuth ? <DepositAuth /> : <CardLogIn />}
     </>
   );
 }
@@ -122,16 +120,16 @@ export function DepositAuth() {
 
   return (
     <>
-      <h1> </h1>
+      <h1>Hello {user.name}!</h1>
+
       <CardPersonalized
-        wide="50"
+        width="40"
         header="Deposit"
         center="true"
         status={status}
         body={
           display ? (
             <>
-              <h1>Hello {user.name}!</h1>
               <div className="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
                 Please select an amount without decimals.
               </div>
@@ -163,13 +161,6 @@ export function DepositAuth() {
                       disabled={!depositAmount}
                       titleButton="Deposit"
                       handleOnclick={handleDeposit}
-                    />
-                  </div>
-                  <br />
-                  <div className="col">
-                    <ButtonPersonalized
-                      titleButton="Logout"
-                      handleOnclick={() => signOut()}
                     />
                   </div>
                 </div>

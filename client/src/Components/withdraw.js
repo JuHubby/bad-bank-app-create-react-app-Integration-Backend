@@ -1,7 +1,8 @@
 import {
   CardPersonalized,
-  ButtonPersonalized, LinkPersonalized,
-  CardLogIn
+  ButtonPersonalized,
+  LinkPersonalized,
+  CardLogIn,
 } from "./customePersonalizedComponents";
 import React from "react";
 import { useState, useContext } from "react";
@@ -15,13 +16,13 @@ function Withdraw() {
 
   return (
     <>
-      <p>Context share {JSON.stringify(ctx)}</p>
+      {/* <p>Context share {JSON.stringify(ctx)}</p> */}
 
-      {user.ValAuth ? (
+      {user.valAuth ? (
         <WithdrawAuth />
       ) : (
         <>
-<CardLogIn/>
+          <CardLogIn />
         </>
       )}
     </>
@@ -137,9 +138,9 @@ export function WithdrawAuth() {
 
   return (
     <>
-      <h1>Hello {user.name}!</h1>
+      <h1>Hello! {user.name}!</h1>
       <CardPersonalized
-        wide="20"
+        wide="40"
         header="Withdraw"
         center="true"
         hdColor="danger"
@@ -168,7 +169,7 @@ export function WithdrawAuth() {
                 id="withdrawalAmount"
                 placeholder="Enter Amount"
                 value={withdrawalAmount}
-                onChange={(e) => withdrawalAmount(e.currentTarget.value)}
+                onChange={(e) => setWithdrawalAmount(e.currentTarget.value)}
               ></input>{" "}
               <br />
               <div className="container text-center">
@@ -179,13 +180,6 @@ export function WithdrawAuth() {
                       titleButton="Withdraw"
                       handleOnclick={handleWithdraw}
                     />
-                     <br />
-                    <div className="col">
-                      <ButtonPersonalized
-                        titleButton="Logout"
-                        handleOnclick={() => signOut()}
-                      />
-                    </div>
                   </div>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import {
   ButtonPersonalized,
   CardPersonalized,
   LinkPersonalized,
+  LinkPersonalizedOutline,
 } from "./customePersonalizedComponents";
 import React from "react";
 import { useState, useContext } from "react";
@@ -18,6 +19,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const { login, user, logOut, setUser } = useAuth();
   const ctx = useAuth();
+  const [dissabledButton, setdissabledButton] = useState(true);
 
   const formik = useFormik({
     initialValues: {
@@ -26,7 +28,6 @@ function Login() {
     },
 
     onSubmit: (values) => {
- 
       var email = values.email;
       var password = values.password;
 
@@ -81,7 +82,7 @@ function Login() {
           setName(name);
           login(name, email, password, balance, user); //call firebase
 
-        //   alert("Account log in successful");
+          //   alert("Account log in successful");
 
           console.log("user info form:", name, email, balance, password);
           console.log(
@@ -156,6 +157,7 @@ function Login() {
           </span>
         );
       }
+      setdissabledButton(false);
       return errors;
     },
   });
@@ -164,28 +166,39 @@ function Login() {
     formik.resetForm();
     setEmail("");
     setPassword("");
+    setdissabledButton(true);
+
+
   }
- console.log("user.valAuth:", user.valAuth)
+  console.log("user.valAuth:", user.valAuth);
   return (
     <>
-      <h6></h6>
+          <h6>{JSON.stringify(ctx)}</h6>
+
       {user.valAuth ? (
-        <CardPersonalized
-          header="Logged  in"
-          width="30"
-          nameButton="Save"
-          hdColor="dark"
-          textCenter="true"
-          status={status}
-          body={<LogInAuth name={name} balance={balance} />}
-        />
+        <>
+          <strong>
+          <div className="sticky-xxl-top"><h1> Hello {user.name} </h1></div>
+
+            </strong>
+          <CardPersonalized
+            header="Logged  In"
+            width="auto"
+            nameButton="Save"
+            hdColor="dark"
+            textCenter="true"
+            status={status}
+            body={<LogInAuth name={name} balance={balance} />}
+          />
+        </>
       ) : (
         <CardPersonalized
-          header="Log into your Account"
           width="30"
+          textcenter="true"
+          center="true"
+          header="Log into your Account"
           nameButton="Save"
           hdColor="dark"
-          textCenter="true"
           status={status}
           body={
             <>
@@ -230,6 +243,8 @@ function Login() {
                         type="submit"
                         name="submitBtn"
                         className="button"
+                        disabled={dissabledButton}
+
                       />
                       <br />
                       <div className="col">
@@ -286,6 +301,7 @@ function LogInAuth(props) {
             titleButton="Sing out"
             handleOnclick={() => logOut()}
           />
+          <br />
           <div className="row">
             <div className="col-sm-6 mb-3 mb-sm-0">
               <div className="card">

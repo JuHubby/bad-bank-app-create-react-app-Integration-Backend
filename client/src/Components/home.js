@@ -33,7 +33,8 @@ function Home() {
                 </div>
                 <div className="col "> 
                     <div className="position-relative top-50 start-50 translate-middle">
-                    <Login/>
+                    {/* CONTENT */}
+                    
                     </div>
                 </div>
             </div>

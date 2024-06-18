@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 var cors = require("cors");
 var dal = require("./dal.js");
-const dbAdmin = require("./admin.js");
+const admin = require("./admin.js");
 // node -r dotenv/config .
 var bodyparser = require("body-parser");
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -86,6 +86,30 @@ app.get("/account/update/:email/:amount", function (req, res) {
     console.log(response);
     res.send(response);
   });
+});
+app.get('/auth', function(req,res){
+    // read token from header
+    const idToken = req.headers.authorization
+    console.log('header:', idToken);
+
+    if (!idToken) {
+      res.status(401).send();
+      return
+    } 
+    //check, did they pass us the token?
+    //if not, do a 401 error
+    //check if verify id token was successful
+    //if not, do 401
+
+    //verify token, is this token valid?
+    admin.auth().verifyIdToken(idToken)
+        .then(function(decodedToken) {
+            console.log('decodedToken:',decodedToken);
+            res.send('Authentication Success!');
+        }).catch(function(error) {
+            console.log('error:', error);
+            res.status(401).send("Token invalid!");
+        });
 });
 
 app.get("/account/all", function (req, res) {

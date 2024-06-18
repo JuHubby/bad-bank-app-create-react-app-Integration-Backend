@@ -59,6 +59,8 @@ function CreateForm(props) {
   const [name, setName] = useState("");
   const { signUp, logOut, user } = useAuth();
   const [dissabledButton, setdissabledButton] = useState(true);
+  const ctx = useContext(UserContext);
+
 
   console.log(
     "user.name context:",
@@ -242,7 +244,6 @@ function CreateForm(props) {
 
   return (
     <div>
-      {/* <h6>{JSON.stringify(ctx)}</h6> */}
 
       <form onSubmit={formik.handleSubmit}>
         <div>Name:</div>

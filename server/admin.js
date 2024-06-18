@@ -6,9 +6,9 @@ admin.initializeApp({
   databaseURL: "https://bank-app-68fd5-default-rtdb.firebaseio.com",
 });
 
-const dbAdmin = admin.database();
-
-module.exports= dbAdmin; 
+// const dbAdmin = admin.database();
+// const dbAdmin = admin;
+module.exports= admin; 
 
 // ...
 

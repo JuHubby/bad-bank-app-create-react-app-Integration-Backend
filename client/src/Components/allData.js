@@ -1,7 +1,10 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
-import { UserContext } from "./context";
-import { ButtonPersonalized, CardPersonalized } from "./customePersonalizedComponents";
+import { UserContext, useAuth } from "./context";
+import {
+  ButtonPersonalized,
+  CardPersonalized,
+} from "./customePersonalizedComponents";
 import Data from "./data";
 
 // const ChildComponent = ({ exerciseManager }) => {
@@ -18,6 +21,7 @@ function AllData() {
   const [status, setStatus] = useState("");
   const [data, setData] = useState("");
   const ctx = useContext(UserContext);
+  const { getUser, authenticated, setAuthenticated } = useAuth();
 
   useEffect(() => {
     fetch("/account/all")
@@ -28,21 +32,37 @@ function AllData() {
       });
   }, []);
 
-  function handleLoad() {
-    console.log(ctx.users);
-    setLoaded(true);
-    if (!loaded) {
+  
+
+
+   async function handleLoad() {
+   
+      const response = await  getUser();
+     
+
+    console.log("authenticated", authenticated);
+
+    if (response) {
+
+        return setLoaded(true);
+        
+
+    }
+    // console.log(ctx.users);
+    // setLoaded(true);
+    else {
       // change settimeout for async function
       setStatus(
-        <span className="alert alert-danger d-flex align-items-center">
-          {" "}
-          Oh my guacamole! Something's not quite right..
-        </span>
-      );
+            <span className="alert alert-danger d-flex align-items-center">
+                {" "}
+                Oh my guacamole! Something's not quite right..
+            </span>
+        );
       setTimeout(() => setStatus(""), 3000);
     }
-
-    setLoaded(true);
+    console.log("loaded", loaded);
+    // setLoaded(true);
+  
   }
 
   return (
@@ -53,8 +73,10 @@ function AllData() {
       nameButton="Save"
       hdColor="dark"
       center="true"
+      status={status}
       body={
         <>
+        {JSON.stringify(ctx)}
           <ButtonPersonalized
             titleButton="Retrieve data"
             handleOnclick={handleLoad}
@@ -73,7 +95,7 @@ function AllData() {
                 </tr>
               </thead>
               <tbody>
-                {loaded &&
+                {authenticated && 
                   data.users.map((user, i) => (
                     <tr>
                       <th scope="row" key={user.i}>

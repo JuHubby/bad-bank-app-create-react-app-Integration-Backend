@@ -11,13 +11,13 @@ import Withdraw from "./Components/withdraw";
 import "./App.css";
 import { UserProvider } from "../src/Components/context";
 
-
 function App() {
+  
   return (
     <div>
-      <NavBar />
-      <div className="body">
-        <UserProvider>
+      <UserProvider>
+        <NavBar />
+        <div className="body">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/CreateAccount/" element={<CreateAccount />} />
@@ -26,8 +26,8 @@ function App() {
             <Route path="/withdraw/" element={<Withdraw />} />
             <Route path="/alldata/" element={<AllData />} />
           </Routes>
-        </UserProvider>
-      </div>
+        </div>
+      </UserProvider>
     </div>
   );
 }

@@ -29,7 +29,7 @@ function CreateAccount() {
 
   return (
     <>
-      <h1>Create Account {JSON.stringify(ctx)}</h1>
+      {/* <h1>Create Account {JSON.stringify(ctx)}</h1> */}
 
       <CardPersonalized
         width="50"

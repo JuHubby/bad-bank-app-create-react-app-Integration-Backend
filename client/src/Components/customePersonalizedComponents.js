@@ -17,6 +17,34 @@ const defaultColor = "success";
 //     "dark":       $dark
 //   );
 
+function HeaderPersonalized(props) {
+  function classes() {
+    const hd = props.hdColor ? `${props.hdColor}` : `light`;
+    const txt = props.txtColor ? `text-${props.txtColor} ` : `text-`;
+    const style = { width: "18rem" };
+    return `card-header ${txt}bg-${hd} mb-3  text-ligth border-0 ${
+      props.center == "true" ? "m-auto" : " "
+    } float-none ${props.width ? `w-${props.width} mb-3` : ""} ${style}`;
+  }
+
+  return (
+    <div className="container-fluid">
+    <div className="row">
+      <div className="col text-center">
+    <div className="container-fluid shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+      <br />
+      <div className={classes()}>
+        <div>
+          <h1> {props.header}</h1>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    );
+}
+
 function CardPersonalized(props) {
   function classes() {
     const hd = props.hdColor ? `${props.hdColor}` : defaultColor;
@@ -221,4 +249,5 @@ export {
   LinkPersonalizedButtonLook,
   LinkPersonalizedOutline,
   CardLogIn,
+  HeaderPersonalized,
 };

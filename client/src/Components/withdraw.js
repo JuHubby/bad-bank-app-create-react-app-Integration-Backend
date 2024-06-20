@@ -138,7 +138,7 @@ export function WithdrawAuth() {
 
   return (
     <>
-      <h1>Hello! {user.name}!</h1>
+      {/* <h1>Hello {user.name}!</h1> */}
       <CardPersonalized
         wide="40"
         header="Withdraw"

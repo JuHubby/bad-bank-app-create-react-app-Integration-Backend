@@ -2,7 +2,7 @@ import {
   ButtonPersonalized,
   CardPersonalized,
   LinkPersonalized,
-  LinkPersonalizedOutline,
+  HeaderPersonalized,
 } from "./customePersonalizedComponents";
 import React from "react";
 import { useState, useContext } from "react";
@@ -167,20 +167,16 @@ function Login() {
     setEmail("");
     setPassword("");
     setdissabledButton(true);
-
-
   }
   console.log("user.valAuth:", user.valAuth);
   return (
     <>
-          <h6>{JSON.stringify(ctx)}</h6>
+      {/* <h6>{JSON.stringify(ctx)}</h6> */}
 
       {user.valAuth ? (
         <>
-          <strong>
-          <div className="sticky-xxl-top"><h1> Hello {user.name} </h1></div>
-
-            </strong>
+          <br />
+          <HeaderPersonalized header={`Hello ${user.name} !`} width="auto" />
           <CardPersonalized
             header="Logged  In"
             width="auto"
@@ -244,7 +240,6 @@ function Login() {
                         name="submitBtn"
                         className="button"
                         disabled={dissabledButton}
-
                       />
                       <br />
                       <div className="col">
@@ -289,7 +284,6 @@ function LogInAuth(props) {
   );
   return (
     <>
-      <h1>Hello {user.name}!</h1>
       <p>Your current balance is:</p>
       <br />
       {/* I want to link this to balance context or prop variable */}

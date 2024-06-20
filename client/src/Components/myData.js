@@ -5,25 +5,34 @@ import {
   ButtonPersonalized,
   CardPersonalized,
 } from "./customePersonalizedComponents";
-import Data from "./data";
 
-function AllData() {
+
+function MyData() {
   const [loaded, setLoaded] = useState(false);
   const [status, setStatus] = useState("");
   const [data, setData] = useState("");
   const ctx = useContext(UserContext);
-  const { getUser, authenticated, setAuthenticated } = useAuth();
+  const { getUser, authenticated, setAuthenticated, user } = useAuth();
+
+  // useEffect(() => {
+  //   fetch("/account/all")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       setData({ users: data });
+  //     });
+  // }, []);
 
   useEffect(() => {
-    fetch("/account/all")
+    var email = user.email;
+    fetch(`/account/find/${email}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setData({ users: data });
+        setData(data);
       });
   }, []);
 
-  
   async function handleLoad() {
     const response = await getUser();
 
@@ -79,20 +88,21 @@ function AllData() {
                 </tr>
               </thead>
               <tbody>
-                {authenticated &&
-                  data.users.map((user, i) => (
-                    <tr>
-                      <th scope="row" key={user.i}>
-                        {i}
-                      </th>
-                      <td>{user._id}</td>
-                      <td>{user.name}</td>
-                      <td>{user.lastname}</td>
-                      <td>{user.email}</td>
-                      <td>{user.password}</td>
-                      <td>{user.balance}</td>
-                    </tr>
-                  ))}
+                {authenticated && 
+                
+                (
+                  <tr>
+                    <th scope="row" >
+                    </th>
+                    <td>{data[0]._id}</td>
+                    <td>{data[0].name}</td>
+                    <td>{data[0].lastName}</td>
+                    <td>{data[0].email}</td>
+                    <td>{data[0].password}</td>
+                    <td>{data[0].balance}</td>
+                  </tr>
+                )
+                }
               </tbody>
             </table>
           </div>
@@ -102,4 +112,4 @@ function AllData() {
   );
 }
 
-export default AllData;
+export default MyData;

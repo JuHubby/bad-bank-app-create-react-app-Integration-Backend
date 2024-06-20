@@ -1,36 +1,21 @@
 // import * as admin from "firebase-admin";
 const admin = require('firebase-admin');
 
+
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   databaseURL: "https://bank-app-68fd5-default-rtdb.firebaseio.com",
 });
 
-// const dbAdmin = admin.database();
-// const dbAdmin = admin;
 module.exports= admin; 
 
-// ...
 
-// import { initializeApp } from 'firebase-admin/app';
-
-// initializeApp({
-//   credential: applicationDefault(),
-//   databaseURL: "https://bank-app-68fd5-default-rtdb.firebaseio.com",
+// var db = admin.database();
+// var ref = db.ref("restricted_access/secret_document");
+// ref.once("value", function(snapshot) {
+//   console.log(snapshot.val());
 // });
 
-// // Initialize the default app
-// const defaultApp = initializeApp(defaultAppConfig);
+// module.exports= db; 
 
-// or
 
-// var admin = require("firebase-admin");
-
-// var serviceAccount = require("path/to/serviceAccountKey.json");
-
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://bank-app-68fd5-default-rtdb.firebaseio.com",
-// });
-
-// module.exports = admin;

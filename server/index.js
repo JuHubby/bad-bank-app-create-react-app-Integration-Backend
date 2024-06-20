@@ -3,7 +3,8 @@ var app = express();
 var cors = require("cors");
 var dal = require("./dal.js");
 const admin = require("./admin.js");
-// node -r dotenv/config .
+const db = require('./admin.js');
+
 var bodyparser = require("body-parser");
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json({ limit: "10mb" }));

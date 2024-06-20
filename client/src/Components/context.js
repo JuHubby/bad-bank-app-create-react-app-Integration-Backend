@@ -89,6 +89,7 @@ export function UserProvider({ children }) {
           balance: balance,
           valAuth: false,
         }));
+        logOut();
         console.log("user.email from context:", user.email);
       })
       .catch((error) => {
@@ -123,6 +124,8 @@ export function UserProvider({ children }) {
             console.log("e:", e);})
     } else {
         setAuthenticated(false);
+        console.log("setAuthentication:" , authenticated);
+        alert("There is currently no logged in user. Unable to call Auth Route.")
       console.warn(
         "There is currently no logged in user. Unable to call Auth Route."
       );

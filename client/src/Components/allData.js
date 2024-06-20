@@ -5,7 +5,6 @@ import {
   ButtonPersonalized,
   CardPersonalized,
 } from "./customePersonalizedComponents";
-import Data from "./data";
 
 function AllData() {
   const [loaded, setLoaded] = useState(false);
@@ -14,37 +13,36 @@ function AllData() {
   const ctx = useContext(UserContext);
   const { getUser, authenticated, setAuthenticated } = useAuth();
 
+  console.log("authenticated", authenticated);
+
   useEffect(() => {
     fetch("/account/all")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setData({ users: data });
       });
   }, []);
 
-  
-  async function handleLoad() {
-    const response = await getUser();
+  function handleLoad() {
+    function resolveAfterGetInfo() {
+      return new Promise((resolve, reject) => {
+        getUser();
+      });
+    }
 
-    console.log("authenticated", authenticated);
+    async function asyncCall() {
+      console.log("calling");
+      const result = await resolveAfterGetInfo();
+      console.log(result);
+      return result;
+    }
+    const response = asyncCall();
 
     if (response) {
       return setLoaded(true);
     }
-    // console.log(ctx.users);
-    // setLoaded(true);
-    else {
-      // change settimeout for async function
-      setStatus(
-        <span className="alert alert-danger d-flex align-items-center">
-          {" "}
-          Oh my guacamole! Something's off... Looks like nobody's logged in.
-          Please log in to access this info.
-        </span>
-      );
-      setTimeout(() => setStatus(""), 3000);
-    }
+    // setLoaded(true)
     console.log("loaded", loaded);
     // setLoaded(true);
   }

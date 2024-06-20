@@ -10,7 +10,6 @@ function Home() {
   const { user } = useAuth();
   return (
     <>
-      <HeaderPersonalized header={`Hello ${user.name} !`} width="auto" />
 
       <div className="container-fluid">
         <div className="row position-relative">

@@ -120,7 +120,7 @@ export function DepositAuth() {
 
   return (
     <>
-      <h1>Hello {user.name}!</h1>
+      {/* <h1>Hello {user.name}!</h1> */}
 
       <CardPersonalized
         width="40"

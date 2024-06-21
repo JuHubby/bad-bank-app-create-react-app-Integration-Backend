@@ -121,7 +121,9 @@ export function UserProvider({ children }) {
         })
         .catch((e) => {
             setAuthenticated(false);
-            console.log("e:", e);})
+            alert("Wrong token. Unable to call Auth Route.");
+            console.log("e:", e);
+          })
     } else {
         setAuthenticated(false);
         console.log("setAuthentication:" , authenticated);

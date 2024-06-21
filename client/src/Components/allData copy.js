@@ -6,28 +6,28 @@ import {
   CardPersonalized,
 } from "./customePersonalizedComponents";
 
-function AllData() {
+function AllDataCopy() {
+  const [loaded, setLoaded] = useState(false);
   const [status, setStatus] = useState("");
   const [data, setData] = useState("");
   const ctx = useContext(UserContext);
-  const { getUser, authenticated, setAuthenticated, user } = useAuth();
+  const { getUser, authenticated, setAuthenticated } = useAuth();
 
   console.log("authenticated", authenticated);
 
   useEffect(() => {
-    var email = user.email;
-    fetch(`/account/find/${email}`)
+    fetch("/account/all")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setData(data);
+        // console.log(data);
+        setData({ users: data });
       });
   }, []);
 
   function handleLoad() {
     function resolveAfterGetInfo() {
       return new Promise((resolve, reject) => {
-        resolve(getUser());
+        getUser();
       });
     }
 
@@ -35,19 +35,16 @@ function AllData() {
       console.log("calling");
       const result = await resolveAfterGetInfo();
       console.log(result);
-      if (!result) {
-        setStatus(
-          <span className="alert alert-danger d-flex align-items-center">
-            {" "}
-            There is currently no logged in user. Unable to call Auth Route.
-          </span>
-        );
-        setTimeout(() => setStatus(""), 3000);
-      } else {
-        return setAuthenticated(true);
-      }
+      return result;
     }
-    asyncCall();
+    const response = asyncCall();
+
+    if (response) {
+      return setLoaded(true);
+    }
+    // setLoaded(true)
+    console.log("loaded", loaded);
+    // setLoaded(true);
   }
 
   return (
@@ -80,17 +77,20 @@ function AllData() {
                 </tr>
               </thead>
               <tbody>
-                {authenticated && (
-                  <tr>
-                    <th scope="row"></th>
-                    <td>{data[0]._id}</td>
-                    <td>{data[0].name}</td>
-                    <td>{data[0].lastName}</td>
-                    <td>{data[0].email}</td>
-                    <td>{data[0].password}</td>
-                    <td>{data[0].balance}</td>
-                  </tr>
-                )}
+                {authenticated &&
+                  data.users.map((user, i) => (
+                    <tr>
+                      <th scope="row" key={user.i}>
+                        {i}
+                      </th>
+                      <td>{user._id}</td>
+                      <td>{user.name}</td>
+                      <td>{user.lastname}</td>
+                      <td>{user.email}</td>
+                      <td>{user.password}</td>
+                      <td>{user.balance}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
@@ -100,4 +100,4 @@ function AllData() {
   );
 }
 
-export default AllData;
+// export default AllData;

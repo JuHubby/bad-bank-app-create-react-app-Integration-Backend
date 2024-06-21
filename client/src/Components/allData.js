@@ -31,23 +31,7 @@ function AllData() {
       });
     }
 
-    async function asyncCall() {
-      console.log("calling");
-      const result = await resolveAfterGetInfo();
-      console.log(result);
-      if (!result) {
-        setStatus(
-          <span className="alert alert-danger d-flex align-items-center">
-            {" "}
-            There is currently no logged in user. Unable to call Auth Route.
-          </span>
-        );
-        setTimeout(() => setStatus(""), 3000);
-      } else {
-        return setAuthenticated(true);
-      }
-    }
-    asyncCall();
+   resolveAfterGetInfo();
   }
 
   return (

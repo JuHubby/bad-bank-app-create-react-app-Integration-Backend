@@ -274,11 +274,11 @@ function LogInAuth(props) {
 
   return (
     <>
-      <div class="accordion" id="accordionPanelsStayOpenExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header">
+      <div className="accordion" id="accordionPanelsStayOpenExample">
+        <div className="accordion-item">
+          <h2 className="accordion-header">
             <button
-              class="accordion-button"
+              className="accordion-button"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#panelsStayOpen-collapseOne"
@@ -290,17 +290,17 @@ function LogInAuth(props) {
           </h2>
           <div
             id="panelsStayOpen-collapseOne"
-            class="accordion-collapse collapse show"
+            className="accordion-collapse collapse show"
           >
-            <div class="accordion-body ">
-              <div class="d-flex justify-content-start">
+            <div className="accordion-body ">
+              <div className="d-flex justify-content-start">
                 <h5>Account Number: xxx-xxx-xxx-0603</h5>
               </div>
 
-              <div class="d-flex justify-content-end">
+              <div className="d-flex justify-content-end">
                 <p>Your current balance is:</p>
               </div>
-              <div class="d-flex justify-content-end">
+              <div className="d-flex justify-content-end">
                 <h3> {USDollar.format(props.balance)}</h3>
               </div>
             </div>
@@ -347,9 +347,9 @@ function LogInAuth(props) {
           </div>
           <div className="col ">
             <div className="position-relative top-50 start-50 translate-middle">
-              <div class="container text-center">
-                <div class="row row-cols-2">
-                  <div class="col">
+              <div className="container text-center">
+                <div className="row row-cols-2">
+                  <div className="col">
                     <CardPersonalized
                       width="100"
                       header={"Stocks"}
@@ -361,7 +361,7 @@ function LogInAuth(props) {
                       //
                     />
                   </div>
-                  <div class="col">
+                  <div className="col">
                     <CardPersonalized
                       width="100"
                        header="Bonds"
@@ -373,7 +373,7 @@ function LogInAuth(props) {
                       //
                     />
                   </div>
-                  <div class="col">
+                  <div className="col">
                     <CardPersonalized
                       width="100"
                        header="Mutual Funds"
@@ -385,7 +385,7 @@ function LogInAuth(props) {
                       //
                     />
                   </div>
-                  <div class="col">
+                  <div className="col">
                     <CardPersonalized
                       width="100"
                        header="Real State"

@@ -9,83 +9,90 @@ import {
 function AllData() {
   const [status, setStatus] = useState("");
   const [data, setData] = useState();
+  const [count, setCount] = useState(0);
+  const [show, setShow] = useState(0);
   const ctx = useContext(UserContext);
   const { getUser, authenticated, setAuthenticated, user, currentUser } =
     useAuth();
 
   console.log("authenticated", authenticated);
+  console.log("currentUser", currentUser);
 
-  let USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-});
+  let USDollar = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  useEffect(() => {
+    
+    const load = () => {
+      if (currentUser) {
+        getUser();
+        var emailU = currentUser.email;
+        fetch(`/account/find/${emailU}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+    
+            setData(data);
+            console.log("data", data);
+          });
+      }
+      return;
+    };
+
+    return load;
+  }, []);
+
+  // const load = () =>
+  //   {
+  //     if(currentUser) { var emailU = currentUser.email;
+  //   fetch(`/account/find/${emailU}`)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       var dataLoaded = data;
+  //       setData(data);
+  //       console.log("data", dataLoaded);
+  //       console.log("data", data);
+  //     });
+  //   };
+  //     console.log("currentUser", currentUser);
+  // }
 
   function handleLoad() {
-    //   function resolveAfterGetInfo() {
-    //     return new Promise((resolve, reject) => {
-    //       resolve(getUser());
-    //     });
-    //   }
+   
 
-    //  resolveAfterGetInfo();
+    // function resolveAfterGetInfo() {
+    //   return new Promise((resolve, reject) => {
+    //     resolve(getUser());
+    //   });
+    // }
 
-    if (currentUser) {
-      const getUsers = async () => {
-        try {
-          var email = currentUser.email;
-          const response = await fetch(`/account/find/${email}`);
+    // resolveAfterGetInfo();
 
-          if (response.status != 200) {
-            throw new Error(
-              `something went wrong, status code: ${response.status}`
-            );
-          }
-          const users = await response.json();
-          return users;
-        } catch (err) {
-          console.log(err);
-        }
-      };
+    if (authenticated) {
+      setShow(true);
+      // setTimeout(() => setShow(false), 8000);
+      alert("Access approved!");
+    } else {
+     
+      // setData();
+      setShow(false);
+      alert("Access Denied!");
+      setStatus(
+        <span className="alert alert-danger d-flex align-items-center">
+          {" "}
+          Oh my guacamole! Something's off... Looks like nobody's logged in.
+          Please log in to access this info.
+        </span>
+      );
+      setTimeout(() => setStatus(""), 3000);
 
-      console.log("after url");
-      (async () => {
-        const users = await getUsers();
-        if (users) {
-          console.log("data updated after fetching:" + JSON.stringify(users)); // Now you have access to the data
-
-          setData(users);
-          console.log(data);
-          
-          return;
-        }
-        console.warn(
-          "There is currently no logged in user. Unable to call Auth Route."
-        );
-        setStatus(
-          <span className="alert alert-danger d-flex align-items-center">
-            {" "}
-            Oh my guacamole! Something's off... Looks like nobody's logged in.
-            Please log in to access this info.
-          </span>
-        );
-        setTimeout(() => setStatus(""), 3000);
-      })();
-      console.log("after url");
-      return;
     }
-    console.warn(
-      "There is currently no logged in user. Unable to call Auth Route."
-    );
-    setStatus(
-      <span className="alert alert-danger d-flex align-items-center">
-        {" "}
-        Oh my guacamole! Something's off... Looks like nobody's logged in.
-        Please log in to access this info.
-      </span>
-    );
-    setTimeout(() => setStatus(""), 3000);
-    
+  
   }
+
   console.log("data:", data);
   return (
     <CardPersonalized
@@ -117,7 +124,7 @@ function AllData() {
                 </tr>
               </thead>
               <tbody>
-                {data && (
+                {(authenticated && show) && (
                   <tr>
                     <th scope="row"></th>
                     <td>{data[0]._id}</td>

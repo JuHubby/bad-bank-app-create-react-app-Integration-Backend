@@ -214,7 +214,7 @@ function CreateForm(props) {
     <div>
 
       <form onSubmit={formik.handleSubmit}>
-        <div>Name:</div>
+        <div>First Name:</div>
         <input
           className="form-control"
           id="name"

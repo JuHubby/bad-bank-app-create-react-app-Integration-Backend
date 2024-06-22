@@ -106,54 +106,47 @@ export function UserProvider({ children }) {
       });
   };
 
-  // const getUser = () => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       console.log("user", user);
-  //       // User is signed in, see docs for a list of available properties
-  //       // https://firebase.google.com/docs/reference/js/v8/firebase.User
-  //       var uid = user.uid;
-  //       // The user object has basic properties such as display name, email, etc.
+  const getUser = () => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // setCurrentUser(user);
+        try {
+          const idToken = user.accessToken;
+          console.log("idToken:", idToken);
 
-  //       const email = user.email;
-  //       // The user's ID, unique to the Firebase project. Do NOT use
-  //       // this value to authenticate with your backend server, if
-  //       // you have one. Use User.getIdToken() instead.
-  //       const idToken = user.getIdToken();
-  //       try {
-  //         if (idToken) {
-  //           //async "iffe" function -> auto-executes
-  //           // ...
-  //           console.log("idToken:", idToken);
-  //           (async () => {
-  //             let response = await fetch("/auth", {
-  //               method: "GET",
-  //               headers: {
-  //                 Authorization: idToken,
-  //               },
-  //             });
-  //             let text = await response.text();
-  //             console.log("response:", response);
-  //             setAuthenticated(true);
-  //             setCurrentUser(user);
-  //             console.log("currentuser:", currentUser);
-  //             setLoading(false);
+          (async () => {
+            let response = await fetch("/auth", {
+              method: "GET",
+              headers: {
+                Authorization: idToken,
+              },
+            });
+            let text = await response.text();
+            console.log("response:", text);
+            // setCurrentUser(user);
+            // console.log("currentuser:", currentUser);
+            setAuthenticated(true);
+            // setCurrentUser(user);
 
-  //             return;
-  //           })();
-  //         }
-  //       } catch (err) {
-  //         console.log(err);
-  //         setAuthenticated(false);
-  //         alert("Wrong token. Unable to call Auth Route.");
-  //       }
-  //     } else {
-  //       // User is signed out
-  //       // ...
-  //       console.log("User is not logged in");
-  //     }
-  //   });
-  // };
+            return;
+          })();
+        } catch (err) {
+          console.log(err);
+          setAuthenticated(false);
+          // setCurrentUser(user);
+          alert("Wrong token. Unable to call Auth Route.");
+        }
+        return currentUser;
+      } else {
+        // User is signed out
+        // ...
+        console.log("User is not logged in");
+        setAuthenticated(false);
+   
+
+      }
+    });
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -166,53 +159,6 @@ export function UserProvider({ children }) {
     return unsubscribe;
   }, []);
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       console.log("user", user);
-  //       // User is signed in, see docs for a list of available properties
-  //       // https://firebase.google.com/docs/reference/js/v8/firebase.User
-  //       var uid = user.uid;
-  //       // The user object has basic properties such as display name, email, etc.
-
-  //       const email = user.email;
-  //       // The user's ID, unique to the Firebase project. Do NOT use
-  //       // this value to authenticate with your backend server, if
-  //       // you have one. Use User.getIdToken() instead.
-  //       const idToken = user.getIdToken();
-  //       try {
-  //         if (idToken) {
-  //           //async "iffe" function -> auto-executes
-  //           // ...
-  //           console.log("idToken:", idToken);
-  //           (async () => {
-  //             let response = await fetch("/auth", {
-  //               method: "GET",
-  //               headers: {
-  //                 Authorization: idToken,
-  //               },
-  //             });
-  //             let text = await response.text();
-  //             console.log("response:", response);
-  //             setAuthenticated(true);
-  //             setCurrentUser(user);
-  //             console.log("currentuser:", currentUser);
-  //             setLoading(false);
-
-  //             return;
-  //           })();
-  //         }
-  //       } catch (err) {
-  //         console.log(err);
-  //         setAuthenticated(false);
-  //         alert("Wrong token. Unable to call Auth Route.");
-  //       }
-  //     }
-  //     console.log("User is not logged in");
-  //     return unsubscribe;
-  //   });
-  // }, []);
-
   const value = {
     login,
     logOut,
@@ -223,6 +169,7 @@ export function UserProvider({ children }) {
     loading,
     user,
     setUser,
+    getUser,
   };
 
   return (

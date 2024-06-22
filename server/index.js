@@ -65,7 +65,7 @@ app.post("/account/login", function (req, res) {
 // find user account
 app.get("/account/find/:email", function (req, res) {
   dal.find(req.params.email).then((user) => {
-    console.log(user);
+    console.log("user here from server:", user);
     res.send(user);
   });
 });
@@ -73,7 +73,7 @@ app.get("/account/find/:email", function (req, res) {
 // find one user by email - alternative to find
 app.get("/account/findOne/:email", function (req, res) {
   dal.findOne(req.params.email).then((user) => {
-    console.log(user);
+    console.log("user here from server:", user);
     res.send(user);
   });
 });

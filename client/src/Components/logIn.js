@@ -3,23 +3,28 @@ import {
   CardPersonalized,
   LinkPersonalized,
   HeaderPersonalized,
+  LinkPersonalizedOutline,
 } from "./customePersonalizedComponents";
 import React from "react";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useAuth } from "./context";
 import { Form, useFormik, resetForm } from "formik";
 import { DepositAuth } from "./deposit";
 import { WithdrawAuth } from "./withdraw";
 
 function Login() {
+  const [data, setData] = useState();
   const [status, setStatus] = useState("");
   const [balance, setBalance] = useState(0);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const { login, user, logOut, setUser } = useAuth();
+  const { login, authenticated, logOut, currentUser, user, setUser } =
+    useAuth();
   const ctx = useAuth();
   const [dissabledButton, setdissabledButton] = useState(true);
+
+  console.log("currentUser", currentUser);
 
   const formik = useFormik({
     initialValues: {
@@ -33,7 +38,7 @@ function Login() {
 
       setEmail(email);
       setPassword(password);
-      console.log(values);
+      console.log("values", values);
 
       const url = `/account/login`;
       console.log("after url");
@@ -63,6 +68,7 @@ function Login() {
             );
           }
           const userData = await response.json();
+          console.log("userdata:", userData);
           return userData;
         } catch (err) {
           console.log(err);
@@ -80,21 +86,11 @@ function Login() {
           setPassword(() => userData.password);
           setBalance(balance);
           setName(name);
-          login(name, email, password, balance, user); //call firebase
+          login(name, email, password, balance); //call firebase
 
-          //   alert("Account log in successful");
-
+          console.log("currentUser", currentUser);
           console.log("user info form:", name, email, balance, password);
-          console.log(
-            "user.name context here:",
-            user.name,
-            user.balance,
-            user.valAuth,
-            user.email,
-            user.password
-          );
-          clearForm();
-
+          console.log("user info context:", user);
           return; //important
         }
 
@@ -113,6 +109,7 @@ function Login() {
         );
         setTimeout(() => setStatus(""), 3000);
       })();
+      clearForm();
     },
 
     validate: (values) => {
@@ -168,23 +165,25 @@ function Login() {
     setPassword("");
     setdissabledButton(true);
   }
-  console.log("user.valAuth:", user.valAuth);
+  console.log("parse:", window.localStorage.getItem("user"));
+
+  console.log("current user", currentUser);
+  console.log("user info form:", name, email, balance, password);
   return (
     <>
       {/* <h6>{JSON.stringify(ctx)}</h6> */}
 
-      {user.valAuth ? (
+      {currentUser ? (
         <>
           <br />
-          <HeaderPersonalized header={`Hello ${user.name} !`} width="auto" />
           <CardPersonalized
-            header="Logged  In"
+            header={`Hello ${user.name} !`}
             width="auto"
             nameButton="Save"
             hdColor="dark"
             textCenter="true"
             status={status}
-            body={<LogInAuth name={name} balance={balance} />}
+            body={<LogInAuth balance={user.balance} />}
           />
         </>
       ) : (
@@ -266,50 +265,138 @@ function Login() {
   );
 }
 function LogInAuth(props) {
-  const { user, logOut } = useAuth();
-  console.log(
-    "user info form:",
-    props.name,
-    props.email,
-    props.balance,
-    props.password
-  );
-  console.log(
-    "user.name context:",
-    user.name,
-    user.balance,
-    user.valAuth,
-    user.email,
-    user.password
-  );
+  const { currentUser, logOut, user, logIn } = useAuth();
+  let USDollar = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  console.log("user info form:", user.name, user.balance);
+
   return (
     <>
-      <p>Your current balance is:</p>
-      <br />
-      {/* I want to link this to balance context or prop variable */}
-      <h5>$ {user.balance}</h5>
-      <br />
-      <div className="row">
-        <div className="col">
-          <ButtonPersonalized
-            titleButton="Sing out"
-            handleOnclick={() => logOut()}
-          />
-          <br />
-          <div className="row">
-            <div className="col-sm-6 mb-3 mb-sm-0">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title"></h5>
-                  <DepositAuth />
-                </div>
+      <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#panelsStayOpen-collapseOne"
+              aria-expanded="true"
+              aria-controls="panelsStayOpen-collapseOne"
+            >
+              <h1>Account Summary</h1>
+            </button>
+          </h2>
+          <div
+            id="panelsStayOpen-collapseOne"
+            class="accordion-collapse collapse show"
+          >
+            <div class="accordion-body ">
+              <div class="d-flex justify-content-start">
+                <h5>Account Number: xxx-xxx-xxx-0603</h5>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <p>Your current balance is:</p>
+              </div>
+              <div class="d-flex justify-content-end">
+                <h3> {USDollar.format(props.balance)}</h3>
               </div>
             </div>
-            <div className="col-sm-6">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title"></h5>
-                  <WithdrawAuth />
+          </div>
+        </div>
+      </div>
+
+      <br />
+
+      <br />
+
+      <div className="container-fluid">
+        <div className="row position-relative">
+          <div className="col ">
+            <div className="position-relative top-50 start-50 translate-middle">
+              <CardPersonalized
+                width="75"
+                // header="Welcome to the Bank"
+                // title="Welcome to the Bank"
+                text="Start using our bank app, equipped with innovative features named CoolBank."
+                image="visa.png"
+                textCenter="true"
+              />
+            </div>
+          </div>
+          <div className="col ">
+            <div className="position-relative top-50 start-50 translate-middle">
+              <h2>
+                <strong>Start today!</strong>
+                <br />
+              </h2>
+              <h4>
+                <span>
+                  With us, you have a variety of investment options to help grow
+                  your money.
+                </span>
+              </h4>
+              <br />
+              <LinkPersonalizedOutline
+                titleButton="Get started >>"
+                handleOnclick="#/CreateAccount/"
+              />
+            </div>
+          </div>
+          <div className="col ">
+            <div className="position-relative top-50 start-50 translate-middle">
+              <div class="container text-center">
+                <div class="row row-cols-2">
+                  <div class="col">
+                    <CardPersonalized
+                      width="100"
+                      header={"Stocks"}
+                      //  title="Welcome to the Bank"
+                      //  text="You can use this Bank App as a mobile application that lets you access your bank account from anywhere, at any time "
+                      image="invest.png"
+                      textCenter="true"
+                      hdColor="warning"
+                      //
+                    />
+                  </div>
+                  <div class="col">
+                    <CardPersonalized
+                      width="100"
+                       header="Bonds"
+                      //  title="Welcome to the Bank"
+                      //  text="You can use this Bank App as a mobile application that lets you access your bank account from anywhere, at any time "
+                      image="invest.png"
+                      textCenter="true"
+                      hdColor="warning"
+                      //
+                    />
+                  </div>
+                  <div class="col">
+                    <CardPersonalized
+                      width="100"
+                       header="Mutual Funds"
+                      //  title="Welcome to the Bank"
+                      //  text="You can use this Bank App as a mobile application that lets you access your bank account from anywhere, at any time "
+                      image="invest.png"
+                      textCenter="true"
+                      hdColor="warning"
+                      //
+                    />
+                  </div>
+                  <div class="col">
+                    <CardPersonalized
+                      width="100"
+                       header="Real State"
+                      //  title="Welcome to the Bank"
+                      //  text="You can use this Bank App as a mobile application that lets you access your bank account from anywhere, at any time "
+                      image="invest.png"
+                      textCenter="true"
+                      hdColor="warning"
+                      //
+                    />
+                  </div>
                 </div>
               </div>
             </div>

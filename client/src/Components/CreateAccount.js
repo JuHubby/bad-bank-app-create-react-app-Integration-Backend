@@ -15,17 +15,8 @@ import AllData from "./allData";
 function CreateAccount() {
   const [status, setStatus] = useState("");
   const [show, setShow] = useState(true);
-  const { user } = useAuth();
   const ctx = useContext(UserContext);
 
-  console.log(
-    "user.name context:",
-    user.name,
-    user.balance,
-    user.ValAuth,
-    user.email,
-    user.password
-  );
 
   return (
     <>
@@ -57,19 +48,10 @@ function CreateForm(props) {
   const [balance, setBalance] = useState(300);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const { signUp, logOut, user } = useAuth();
+  const { signUp, logOut, currentUser } = useAuth();
   const [dissabledButton, setdissabledButton] = useState(true);
   const ctx = useContext(UserContext);
 
-
-  console.log(
-    "user.name context:",
-    user.name,
-    user.balance,
-    user.ValAuth,
-    user.email,
-    user.password
-  );
 
   const formik = useFormik({
     initialValues: {
@@ -95,14 +77,7 @@ function CreateForm(props) {
       setPassword(values.password);
 
       console.log("user info form:", name, email, balance, password);
-      console.log(
-        "user.name context:",
-        user.name,
-        user.balance,
-        user.auth,
-        user.email,
-        user.password
-      );
+
       const url = "/account/create";
       console.log("after url");
 
@@ -150,13 +125,6 @@ function CreateForm(props) {
           alert("user account created successfully ")
           props.setShow(false);
           console.log("user info form:", name, email, balance, password);
-          console.log(
-            "user.name context:",
-            user.name,
-            user.balance,
-            user.auth,
-            user.email
-          );
           clearForm();
           return;
         }

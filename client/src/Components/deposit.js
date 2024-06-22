@@ -10,19 +10,21 @@ import { useAuth } from "./context";
 
 function Deposit() {
   const ctx = useAuth();
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
+
+
 
   return (
     <>
       {/* <p>Context share {JSON.stringify(ctx)}</p> */}
 
-      {user.valAuth ? <DepositAuth /> : <CardLogIn />}
+      {currentUser ? <DepositAuth /> : <CardLogIn />}
     </>
   );
 }
 
 export function DepositAuth() {
-  const { user, setUser, login, signOut } = useAuth();
+  const { currentUser, login, setUser, user } = useAuth();
   const [email, setEmail] = useState("");
   const [display, setDisplay] = useState(true);
   const [password, setPassword] = React.useState("");
@@ -30,6 +32,13 @@ export function DepositAuth() {
   const [depositAmount, setDepositAmount] = useState(0);
   const [status, setStatus] = useState("");
   const [balance, setBalance] = useState(0);
+  const [data, setData] = useState();
+
+
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
 
   function validate(field, label) {
     if (!field) {
@@ -63,8 +72,8 @@ export function DepositAuth() {
     // const balance = balancebefore + depositAmount;
     const totalBalanceSofar = parseInt(depositAmount) + parseInt(balance);
     setBalance(totalBalanceSofar);
-
-    var email = user.email;
+    console.log("currentuser", currentUser.email);
+    var email = currentUser.email;
     var amount = depositAmount;
     const url = `/account/update/${email}/${amount}`;
 
@@ -89,14 +98,13 @@ export function DepositAuth() {
         console.log("data updated:" + JSON.stringify(userInfo)); // Now you have access to the data
         var name = userInfo.value.name; //it helps with the delay of usestate
         var balance = userInfo.value.balance;
-
+        console.log("currentuser", currentUser.email);
         setEmail(() => userInfo.value.email);
         setPassword(() => userInfo.value.password);
         setBalance(() => userInfo.value.balance);
         setName(() => userInfo.value.name);
-        login(name, email, password, balance);
-
         setUser((prev) => ({ ...prev, balance: balance }));
+        console.log("data:", data);
         clearForm();
         return setDisplay(false);
       }
@@ -117,84 +125,98 @@ export function DepositAuth() {
     setDepositAmount("");
     setDisplay(true);
   }
-
+  console.log("email:", email);
+  console.log("balance:", user.balance);
+  console.log("currentuser", currentUser.email);
   return (
     <>
       {/* <h1>Hello {user.name}!</h1> */}
-
       <CardPersonalized
-        width="40"
-        header="Deposit"
-        center="true"
+        header={`Hello ${user.name} !`}
+        width="auto"
+        nameButton="Save"
+        hdColor="dark"
+        textCenter="true"
         status={status}
         body={
-          display ? (
-            <>
-              <div className="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
-                Please select an amount without decimals.
-              </div>
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <h5>Balance</h5>
-                  </div>
-                  <div className="col">
-                    <h5>{"$ " + user.balance}</h5>
-                  </div>
-                </div>
-              </div>
-              Deposit Amount <br />
-              <input
-                type="number"
-                className="form-control"
-                id="depositAmount"
-                placeholder="Enter Amount"
-                value={depositAmount}
-                onChange={(e) => setDepositAmount(e.currentTarget.value)}
-              ></input>{" "}
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <ButtonPersonalized
-                      disabled={!depositAmount}
-                      titleButton="Deposit"
-                      handleOnclick={handleDeposit}
-                    />
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              {/* add emoji happy */}
-              {/* <i className="bi bi-emoji-smile"></i> */}
-              <h5 className="alert alert-success text-center">
-                The deposit was successful.
-              </h5>
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <h5>Your new balance is:</h5>
-                  </div>
-                  <div className="col">
-                    <h5>{"$ " + user.balance}</h5>
-                  </div>
-                </div>
-              </div>
-              <br />
-              <div className="row">
-                <div className="col">
-                  <ButtonPersonalized
-                    titleButton="Make a new deposit."
-                    handleOnclick={clearForm}
-                  />
-                </div>
-              </div>
-            </>
-          )
+          <>
+            <p class="fs-1">Welconme to your Bank!</p>
+            <CardPersonalized
+              width="75"
+              header="Deposit"
+              center="true"
+              status={status}
+              body={
+                display ? (
+                  <>
+                    <div className="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+                      Please select an amount without decimals.
+                    </div>
+                    <br />
+                    <div className="container text-center">
+                      <div className="row">
+                        <div className="col">
+                          <h5>Balance</h5>
+                        </div>
+                        <div className="col">
+                          <h5>{USDollar.format(user.balance)}</h5>
+                        </div>
+                      </div>
+                    </div>
+                    Deposit Amount <br />
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="depositAmount"
+                      placeholder="Enter Amount"
+                      value={depositAmount}
+                      onChange={(e) => setDepositAmount(e.currentTarget.value)}
+                    ></input>{" "}
+                    <br />
+                    <div className="container text-center">
+                      <div className="row">
+                        <div className="col">
+                          <ButtonPersonalized
+                            disabled={!depositAmount}
+                            titleButton="Deposit"
+                            handleOnclick={handleDeposit}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* add emoji happy */}
+                    {/* <i className="bi bi-emoji-smile"></i> */}
+                    <h5 className="alert alert-success text-center">
+                      The deposit was successful.
+                    </h5>
+                    <br />
+                    <div className="container text-center">
+                      <div className="row">
+                        <div className="col">
+                          <h5>Your new balance is:</h5>
+                        </div>
+                        <div className="col">
+                          <h5>{USDollar.format(balance)}</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div className="row">
+                      <div className="col">
+                        <ButtonPersonalized
+                          titleButton="Make a new deposit."
+                          handleOnclick={clearForm}
+                        />
+                      </div>
+                    </div>
+                  </>
+                )
+              }
+            />
+          </>
         }
       />
     </>

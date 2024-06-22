@@ -11,14 +11,14 @@ import { defaultBalance } from "./logIn";
 import CardLink from "react-bootstrap/esm/CardLink";
 
 function Withdraw() {
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
   const ctx = useAuth();
 
   return (
     <>
       {/* <p>Context share {JSON.stringify(ctx)}</p> */}
 
-      {user.valAuth ? (
+      {currentUser ? (
         <WithdrawAuth />
       ) : (
         <>
@@ -30,7 +30,7 @@ function Withdraw() {
 }
 
 export function WithdrawAuth() {
-  const { user, setUser, login, signOut } = useAuth();
+  const { currentUser, login, signOut, setUser, user } = useAuth();
   const [status, setStatus] = useState("");
   const [email, setEmail] = useState("");
   const [display, setDisplay] = useState(true);
@@ -38,6 +38,11 @@ export function WithdrawAuth() {
   const [withdrawalAmount, setWithdrawalAmount] = useState(0);
   const [password, setPassword] = useState("");
   const [name, setName] = useState();
+
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
 
   function validate(field, label) {
     if (!field) {
@@ -81,8 +86,13 @@ export function WithdrawAuth() {
     // const balance = balancebefore + withdrawalAmount;
     const totalBalanceSofar = parseInt(balance) + parseInt(withdrawalAmount);
 
+    let USDollar = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+  });
+
     setBalance(totalBalanceSofar);
-    var email = user.email;
+    var email = currentUser.email;
     var amount = withdrawalAmount;
     const url = `/account/update/${email}/${amount}`;
 
@@ -112,7 +122,6 @@ export function WithdrawAuth() {
         setPassword(() => userInfo.value.password);
         setBalance(() => userInfo.value.balance);
         setName(() => userInfo.value.name);
-        login(name, email, password, balance);
 
         setUser((prev) => ({ ...prev, balance: balance }));
         clearForm();
@@ -140,79 +149,94 @@ export function WithdrawAuth() {
     <>
       {/* <h1>Hello {user.name}!</h1> */}
       <CardPersonalized
-        wide="40"
-        header="Withdraw"
-        center="true"
-        hdColor="danger"
+        header={`Hello ${user.name} !`}
+        width="auto"
+        nameButton="Save"
+        hdColor="dark"
+        textCenter="true"
         status={status}
         body={
-          display ? (
-            <>
-              <div className="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
-                Please select an amount without decimals.
-              </div>
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <h5>Balance</h5>
-                  </div>
-                  <div className="col">
-                    <h5>{"$ " + user.balance}</h5>
-                  </div>
-                </div>
-              </div>
-              Withdrawal amount: <br />
-              <input
-                type="number"
-                className="form-control"
-                id="withdrawalAmount"
-                placeholder="Enter Amount"
-                value={withdrawalAmount}
-                onChange={(e) => setWithdrawalAmount(e.currentTarget.value)}
-              ></input>{" "}
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <ButtonPersonalized
-                      disabled={!withdrawalAmount}
-                      titleButton="Withdraw"
-                      handleOnclick={handleWithdraw}
-                    />
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              {/* add emoji happy */}
-              {/* <i className="bi bi-emoji-smile"></i> */}
-              <h5 className="alert alert-success text-center">
-                The withdraw was successful.
-              </h5>
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <h5>Your new balance is:</h5>
-                  </div>
-                  <div className="col">
-                    <h5>{"$ " + user.balance}</h5>
-                  </div>
-                </div>
-              </div>
-              <br />
-              <div className="row">
-                <div className="col">
-                  <ButtonPersonalized
-                    titleButton="Initiate a new withdrawal."
-                    handleOnclick={clearForm}
-                  />
-                </div>
-              </div>
-            </>
-          )
+          <>
+            <p class="fs-1">Welconme to your Bank!</p>
+            <CardPersonalized
+              width="75"
+              header="Withdraw"
+              center="true"
+              hdColor="danger"
+              status={status}
+              body={
+                display ? (
+                  <>
+                    <div className="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+                      Please select an amount without decimals.
+                    </div>
+                    <br />
+                    <div className="container text-center">
+                      <div className="row">
+                        <div className="col">
+                          <h5>Balance</h5>
+                        </div>
+                        <div className="col">
+                          <h5>{USDollar.format(user.balance)}</h5>
+                        </div>
+                      </div>
+                    </div>
+                    Withdrawal amount: <br />
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="withdrawalAmount"
+                      placeholder="Enter Amount"
+                      value={withdrawalAmount}
+                      onChange={(e) =>
+                        setWithdrawalAmount(e.currentTarget.value)
+                      }
+                    ></input>{" "}
+                    <br />
+                    <div className="container text-center">
+                      <div className="row">
+                        <div className="col">
+                          <ButtonPersonalized
+                            disabled={!withdrawalAmount}
+                            titleButton="Withdraw"
+                            handleOnclick={handleWithdraw}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* add emoji happy */}
+                    {/* <i className="bi bi-emoji-smile"></i> */}
+                    <h5 className="alert alert-success text-center">
+                      The withdraw was successful.
+                    </h5>
+                    <br />
+                    <div className="container text-center">
+                      <div className="row">
+                        <div className="col">
+                          <h5>Your new balance is:</h5>
+                        </div>
+                        <div className="col">
+                          <h5>{USDollar.format(balance)}</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div className="row">
+                      <div className="col">
+                        <ButtonPersonalized
+                          titleButton="Initiate a new withdrawal."
+                          handleOnclick={clearForm}
+                        />
+                      </div>
+                    </div>
+                  </>
+                )
+              }
+            />
+          </>
         }
       />
     </>

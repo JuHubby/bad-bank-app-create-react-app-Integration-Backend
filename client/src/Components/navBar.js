@@ -6,13 +6,13 @@ import {
 } from "./customePersonalizedComponents";
 import { useAuth } from "./context";
 import { useState, useEffect } from "react";
+import { auth } from "./firebase";
 
 function NavBar() {
-  const { user, logOut } = useAuth();
+  const { logOut, getUser, currentUser } = useAuth();
 
+  console.log("currentUser:", currentUser); 
 
-  console.log("user.email from context:", user.email);
-  console.log("user.auth from context:", user.valAuth);
 
   function handleLogOut() {
     logOut();
@@ -52,7 +52,7 @@ function NavBar() {
                     label="Database"
                   />
                 </li>
-                {user.valAuth ? (
+                {currentUser ? (
                   <>
                     <li className="nav-item">
                       <NavLinkPers
@@ -69,11 +69,7 @@ function NavBar() {
                       />
                     </li>
                     <li className="nav-item">
-                      <NavLinkPers
-                        href="#/login/"
-                        name="Home"
-                        label="Home"
-                      />
+                      <NavLinkPers href="#/login/" name="Home" label="Home" />
                     </li>
 
                     <li className="nav-item">

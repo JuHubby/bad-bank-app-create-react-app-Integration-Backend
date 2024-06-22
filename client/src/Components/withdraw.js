@@ -157,7 +157,7 @@ export function WithdrawAuth() {
         status={status}
         body={
           <>
-            <p class="fs-1">Welconme to your Bank!</p>
+            <p class="fs-1">Welcome to your Bank!</p>
             <CardPersonalized
               width="75"
               header="Withdraw"

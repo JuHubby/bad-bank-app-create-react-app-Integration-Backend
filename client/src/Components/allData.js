@@ -12,7 +12,7 @@ function AllData() {
   const [count, setCount] = useState(0);
   const [show, setShow] = useState(0);
   const ctx = useContext(UserContext);
-  const { getUser, authenticated, setAuthenticated, user, currentUser } =
+  const { getUser, authenticated, currentUser } =
     useAuth();
 
   console.log("authenticated", authenticated);
@@ -24,7 +24,6 @@ function AllData() {
   });
 
   useEffect(() => {
-    
     const load = () => {
       if (currentUser) {
         getUser();
@@ -33,7 +32,7 @@ function AllData() {
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
-    
+
             setData(data);
             console.log("data", data);
           });
@@ -44,39 +43,15 @@ function AllData() {
     return load;
   }, []);
 
-  // const load = () =>
-  //   {
-  //     if(currentUser) { var emailU = currentUser.email;
-  //   fetch(`/account/find/${emailU}`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       var dataLoaded = data;
-  //       setData(data);
-  //       console.log("data", dataLoaded);
-  //       console.log("data", data);
-  //     });
-  //   };
-  //     console.log("currentUser", currentUser);
-  // }
+
 
   function handleLoad() {
-   
-
-    // function resolveAfterGetInfo() {
-    //   return new Promise((resolve, reject) => {
-    //     resolve(getUser());
-    //   });
-    // }
-
-    // resolveAfterGetInfo();
-
+  
     if (authenticated) {
       setShow(true);
       // setTimeout(() => setShow(false), 8000);
       alert("Access approved!");
     } else {
-     
       // setData();
       setShow(false);
       alert("Access Denied!");
@@ -88,9 +63,7 @@ function AllData() {
         </span>
       );
       setTimeout(() => setStatus(""), 3000);
-
     }
-  
   }
 
   console.log("data:", data);
@@ -124,7 +97,7 @@ function AllData() {
                 </tr>
               </thead>
               <tbody>
-                {(authenticated && show) && (
+                {authenticated && show && (
                   <tr>
                     <th scope="row"></th>
                     <td>{data[0]._id}</td>

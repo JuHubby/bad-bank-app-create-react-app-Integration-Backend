@@ -48,7 +48,7 @@ function NavBar() {
                 <li className="nav-item">
                   <NavLinkPers
                     href="#/alldata/"
-                    name="All data"
+                    name="Data"
                     label="Database"
                   />
                 </li>

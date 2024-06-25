@@ -341,7 +341,7 @@ function LogInAuth(props) {
               <br />
               <LinkPersonalizedOutline
                 titleButton="Get started >>"
-                handleOnclick="#/CreateAccount/"
+                handleOnclick="#"
               />
             </div>
           </div>

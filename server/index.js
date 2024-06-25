@@ -1,3 +1,4 @@
+const path = require('path');
 var express = require("express");
 var app = express();
 var cors = require("cors");
@@ -10,7 +11,7 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json({ limit: "10mb" }));
 
 //serve static files
-app.use(express.static('../client/build'));
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use(cors());
 
 //example test
@@ -120,6 +121,12 @@ app.get("/account/all", function (req, res) {
   });
 });
 
-app.listen(3001, function () {
-  console.log("Runing on port 3001!");
+// app.listen(3001, function () {
+//   console.log("Runing on port 3001!");
+// });
+
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname,'../client/build', 'index.html'));
 });
+

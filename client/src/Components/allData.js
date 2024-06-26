@@ -9,9 +9,7 @@ import {
 function AllData() {
   const [status, setStatus] = useState("");
   const [data, setData] = useState();
-  const [count, setCount] = useState(0);
   const [show, setShow] = useState(0);
-  const ctx = useContext(UserContext);
   const { getUser, authenticated, currentUser } =
     useAuth();
 

@@ -103,7 +103,7 @@ function CreateForm(props) {
 
           const response = await fetch(url, requestOptions);
 
-          if (response.status != 200) {
+          if (response.status !== 200) {
             throw new Error(
               `something went wrong, status code: ${response.status}`
             );
@@ -117,6 +117,7 @@ function CreateForm(props) {
       console.log("after url");
       (async () => {
         const users = await getUsers();
+        console.log("user:", users);
         if (users) {
           console.log("data updated after fetching:" + JSON.stringify(users)); // Now you have access to the data
           signUp(name, email, password, balance); // firebase called

@@ -1,23 +1,23 @@
-const path = require('path');
 var express = require("express");
 var app = express();
 var cors = require("cors");
 var dal = require("./dal.js");
 const admin = require("./admin.js");
-const db = require('./admin.js');
+const db = require("./admin.js");
+
 
 var bodyparser = require("body-parser");
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json({ limit: "10mb" }));
 
 //serve static files
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(express.static('../client/public'));
 app.use(cors());
 
 //example test
 app.get("/api", (req, res) => {
-    res.json({ message: "Hello from server!" });
-  });
+  res.json({ message: "Hello from server!" });
+});
 
 // create user account
 app.post("/account/create", function (req, res) {
@@ -43,7 +43,7 @@ app.post("/account/create", function (req, res) {
   });
 });
 
-// login user
+//login
 app.post("/account/login", function (req, res) {
   dal.find(req.body.email).then((user) => {
     // if user exists, check password
@@ -89,29 +89,32 @@ app.get("/account/update/:email/:amount", function (req, res) {
     res.send(response);
   });
 });
-app.get('/auth', function(req,res){
-    // read token from header
-    const idToken = req.headers.authorization
-    console.log('header:', idToken);
+app.get("/auth", function (req, res) {
+  // read token from header
+  const idToken = req.headers.authorization;
+  console.log("header:", idToken);
 
-    if (!idToken) {
-      res.status(401).send();
-      return
-    } 
-    //check, did they pass us the token?
-    //if not, do a 401 error
-    //check if verify id token was successful
-    //if not, do 401
+  if (!idToken) {
+    res.status(401).send();
+    return;
+  }
+  //check, did they pass us the token?
+  //if not, do a 401 error
+  //check if verify id token was successful
+  //if not, do 401
 
-    //verify token, is this token valid?
-    admin.auth().verifyIdToken(idToken)
-        .then(function(decodedToken) {
-            console.log('decodedToken:',decodedToken);
-            res.send('Authentication Success!');
-        }).catch(function(error) {
-            console.log('error:', error);
-            res.status(401).send("Token invalid!");
-        });
+  //verify token, is this token valid?
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then(function (decodedToken) {
+      console.log("decodedToken:", decodedToken);
+      res.send("Authentication Success!");
+    })
+    .catch(function (error) {
+      console.log("error:", error);
+      res.status(401).send("Token invalid!");
+    });
 });
 
 app.get("/account/all", function (req, res) {
@@ -121,12 +124,6 @@ app.get("/account/all", function (req, res) {
   });
 });
 
-// app.listen(3001, function () {
-//   console.log("Runing on port 3001!");
-// });
-
-
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname,'../client/build', 'index.html'));
+app.listen(3001, function () {
+  console.log("Runing on port 3001!");
 });
-

@@ -11,12 +11,16 @@ Additionally, I aim to implement cookie caching attributes to prevent users from
 ## Installation Guidelines:
  This project was initiated using the Create React App tool (found in the client folder), and the backend was integrated in its respective server folder, connecting with the browser as follows:
 
+ 
+
 #### Cloning this repository to your local machine:
 - Open your terminal or VS Code and navigate to the directory where you want the local repository to be copied.
 - type `git clone https://github.com/JuHubby/bad-bank-app-create-react-app-Integration-Backend.git`
 - Wait for the cloning process to complete, and you will have a local copy of the repository.
 
-**Note: This app also utilizes libraries such as Bootstrap React, React-DOM, Formik, and others in both the client and server folders. Ensure you install these dependencies by running npm install in each folder (client and server).**
+**Note 1: Ensure you are using Node.js version 18 or higher. Also, make sure to have MongoDB running in Docker. Start MongoDB first, then run the server, and finally, run the client-side application.**
+
+**Note 2: This app also utilizes libraries such as Bootstrap React, React-DOM, Formik, and others in both the client and server folders. Ensure you install these dependencies by running npm install in each folder (client and server).**
 
 #### Running the Application:
 
@@ -48,6 +52,8 @@ One of the notable features of this banking app project is the implementation of
 Admin Role: Allows access to the entire database and the ability to modify customer information.
 Customer Role: Limits access to only view their own data, ensuring privacy and security.
 This feature will enhances security and usability by controlling access based on user roles, ensuring that sensitive information is appropriately protected and managed within the application.
+
+I also want to synchronize the database between Firebase and MongoDB so that they contain identical information. This ensures that if someone creates an account, it will be reflected consistently in both databases. This approach is especially useful for apps that share authentication data across different parts of the application, ensuring uniformity and seamless authentication across the entire app.
 
 ## License information:
 MIT license.

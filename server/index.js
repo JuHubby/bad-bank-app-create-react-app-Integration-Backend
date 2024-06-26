@@ -1,3 +1,4 @@
+const path = require('path');
 var express = require("express");
 var app = express();
 var cors = require("cors");
@@ -10,8 +11,16 @@ var bodyparser = require("body-parser");
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json({ limit: "10mb" }));
 
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3001;
+};
+
+
+
 //serve static files
-app.use(express.static('../client/public'));
+
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use(cors());
 
 //example test
@@ -124,6 +133,11 @@ app.get("/account/all", function (req, res) {
   });
 });
 
-app.listen(3001, function () {
-  console.log("Runing on port 3001!");
+// All other GET requests not handled before will return our React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
+
+app.listen(port, function () {
+  console.log(`Runing on port ${port}!`);
 });

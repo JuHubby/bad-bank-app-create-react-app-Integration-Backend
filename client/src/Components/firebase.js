@@ -5,7 +5,7 @@ import { getAuth } from "firebase/auth";
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: String(process.env.REACT_APP_FIREBASE_API_KEY),
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_FIREBASE_DATA_BASE_URL,
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
@@ -18,7 +18,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-
+console.log("env.apikey:", process.env.REACT_APP_API_KEY);
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
 

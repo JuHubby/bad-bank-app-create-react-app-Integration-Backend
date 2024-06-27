@@ -122,7 +122,7 @@ app.get("/auth", function (req, res) {
     })
     .catch(function (error) {
       console.log("error token pass but :", error);
-      res.status(401).send("Token invalid!");
+      res.status(401).send("Token invalid IN BANK END!");
     });
 });
 

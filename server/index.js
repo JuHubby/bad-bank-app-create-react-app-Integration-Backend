@@ -121,7 +121,7 @@ app.get("/auth", function (req, res) {
       res.send("Authentication Success!");
     })
     .catch(function (error) {
-      console.log("error:", error);
+      console.log("error token pass but :", error);
       res.status(401).send("Token invalid!");
     });
 });

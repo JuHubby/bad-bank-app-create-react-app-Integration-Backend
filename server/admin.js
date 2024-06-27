@@ -4,13 +4,14 @@ const admin = require('firebase-admin');
 
 
 
-
+const firebase_private_key_b64 = Buffer.from(process.env.FIREBASE_PRIVATE_KEY_BASE64, 'base64');
+const firebase_private_key = firebase_private_key_b64.toString('utf8');
 
 admin.initializeApp({
   // credential: admin.credential.applicationDefault(),
   credential: admin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
-    private_key: process.env.FIREBASE_PRIVATE_KEY,
+    private_key: firebase_private_key,
     client_email: process.env.FIREBASE_CLIENT_EMAIL,
   }),
 

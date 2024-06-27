@@ -169,6 +169,8 @@ function Login() {
 
   console.log("current user", currentUser);
   console.log("user info form:", name, email, balance, password);
+  
+console.log("env.apikey:", process.env.REACT_APP_API_KEY);
   return (
     <>
       {/* <h6>{JSON.stringify(ctx)}</h6> */}

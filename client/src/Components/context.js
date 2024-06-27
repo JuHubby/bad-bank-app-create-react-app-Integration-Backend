@@ -6,9 +6,11 @@ import {
   setPersistence,
   browserSessionPersistence,
 } from "firebase/auth";
-import { auth } from "./firebase";
+import  auth from "./firebase";
 import { createContext, useContext, useEffect, useState } from "react";
 import { initializeServerApp } from "firebase/app";
+
+
 
 const initValues = {
   name: "",

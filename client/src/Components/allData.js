@@ -35,7 +35,7 @@ function AllData() {
             console.log("data", data);
           });
       }
-      return;
+      // return;
     };
 
     return load;

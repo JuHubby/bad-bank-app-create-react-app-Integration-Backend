@@ -2,7 +2,7 @@
 const admin = require('firebase-admin');
 
 
-const { privateKey } = JSON.parse(process.env.FIREBASE_PRIVATE_KEY)
+// const { privateKey } = JSON.parse(process.env.FIREBASE_PRIVATE_KEY)
 
 // const firebase_private_key_b64 = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g,'\n');
 // const firebase_private_key = String(firebase_private_key_b64);
@@ -11,8 +11,7 @@ admin.initializeApp({
   // credential: admin.credential.applicationDefault(),
   credential: admin.credential.cert({
     project_id: String(process.env.FIREBASE_PROJECT_ID),
-    // private_key: String(process.env.FIREBASE_PRIVATE_KEY),'
-    privateKey,
+    private_key: String(process.env.FIREBASE_PRIVATE_KEY),
     client_email: String(process.env.FIREBASE_CLIENT_EMAIL),
   }),
 

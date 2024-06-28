@@ -34,21 +34,22 @@ function AllData() {
           console.log("data", data);
         });
     }
+
     return;
   }, []);
 
   function handleLoad() {
     if (authenticated) {
-      var emailU = currentUser.email;
-      console.log("EMAILu:", emailU);
-      fetch(`/account/find/${emailU}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
+      // var emailU = currentUser.email;
+      // console.log("EMAILu:", emailU);
+      // fetch(`/account/find/${emailU}`)
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     console.log(data);
 
-          setData(data);
-          console.log("data", data);
-        });
+      //     setData(data);
+      //     console.log("data", data);
+      //   });
 
       setShow(true);
 
@@ -68,9 +69,9 @@ function AllData() {
       setTimeout(() => setStatus(""), 3000);
     }
   }
-  var emailU = currentUser.email;
-  console.log("EMAILu:", emailU);
-  console.log("data:", data);
+  // var emailU = currentUser.email;
+  // console.log("EMAILu:", emailU);
+  // console.log("data:", data);
   return (
     <CardPersonalized
       width="auto"

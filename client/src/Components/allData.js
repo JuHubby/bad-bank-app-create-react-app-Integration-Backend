@@ -26,6 +26,7 @@ function AllData() {
       if (currentUser) {
         getUser();
         var emailU = currentUser.email;
+        console.log("EMAILu:", emailU);
         fetch(`/account/find/${emailU}`)
           .then((response) => response.json())
           .then((data) => {
@@ -35,7 +36,7 @@ function AllData() {
             console.log("data", data);
           });
       }
-      // return;
+      return;
     };
 
     return load;

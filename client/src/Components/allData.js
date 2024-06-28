@@ -47,6 +47,17 @@ function AllData() {
   function handleLoad() {
   
     if (authenticated) {
+      var emailU = currentUser.email;
+        console.log("EMAILu:", emailU);
+        fetch(`/account/find/${emailU}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+
+            setData(data);
+            console.log("data", data);
+          });
+          
       setShow(true);
       
       // setTimeout(() => setShow(false), 8000);

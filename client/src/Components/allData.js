@@ -10,8 +10,7 @@ function AllData() {
   const [status, setStatus] = useState("");
   const [data, setData] = useState();
   const [show, setShow] = useState(0);
-  const { getUser, authenticated, currentUser } =
-    useAuth();
+  const { getUser, authenticated, currentUser } = useAuth();
 
   console.log("authenticated", authenticated);
   console.log("currentUser", currentUser);
@@ -22,44 +21,37 @@ function AllData() {
   });
 
   useEffect(() => {
-    const load = () => {
-      if (currentUser) {
-        getUser();
-        var emailU = currentUser.email;
-        console.log("EMAILu:", emailU);
-        fetch(`/account/find/${emailU}`)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
+    if (currentUser) {
+      getUser();
+      var emailU = currentUser.email;
+      console.log("EMAILu:", emailU);
+      fetch(`/account/find/${emailU}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
 
-            setData(data);
-            console.log("data", data);
-          });
-      }
-      return;
-    };
-
-    return load;
+          setData(data);
+          console.log("data", data);
+        });
+    }
+    return;
   }, []);
 
-
-
   function handleLoad() {
-  
     if (authenticated) {
       var emailU = currentUser.email;
-        console.log("EMAILu:", emailU);
-        fetch(`/account/find/${emailU}`)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
+      console.log("EMAILu:", emailU);
+      fetch(`/account/find/${emailU}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
 
-            setData(data);
-            console.log("data", data);
-          });
-          
+          setData(data);
+          console.log("data", data);
+        });
+
       setShow(true);
-      
+
       // setTimeout(() => setShow(false), 8000);
       alert("Access approved!");
     } else {

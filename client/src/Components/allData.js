@@ -48,6 +48,7 @@ function AllData() {
   
     if (authenticated) {
       setShow(true);
+      
       // setTimeout(() => setShow(false), 8000);
       alert("Access approved!");
     } else {
@@ -64,7 +65,8 @@ function AllData() {
       setTimeout(() => setStatus(""), 3000);
     }
   }
-
+  var emailU = currentUser.email;
+  console.log("EMAILu:", emailU);
   console.log("data:", data);
   return (
     <CardPersonalized

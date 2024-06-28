@@ -10,9 +10,9 @@ const firebase_private_key = firebase_private_key_b64.toString('utf8');
 admin.initializeApp({
   // credential: admin.credential.applicationDefault(),
   credential: admin.credential.cert({
-    "project_id": process.env.FIREBASE_PROJECT_ID,
-    "private_key": firebase_private_key,
-    "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+    project_id: process.env.FIREBASE_PROJECT_ID,
+    private_key: firebase_private_key,
+    client_email: process.env.FIREBASE_CLIENT_EMAIL,
   }),
 
   databaseURL: "https://bank-app-68fd5-default-rtdb.firebaseio.com",

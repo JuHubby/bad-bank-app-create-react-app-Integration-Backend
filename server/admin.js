@@ -4,8 +4,8 @@ const admin = require('firebase-admin');
 
 
 
-const firebase_private_key_b64 = Buffer.from(process.env.FIREBASE_PRIVATE_KEY_BASE64, 'base64');
-const firebase_private_key = firebase_private_key_b64.toString('utf8');
+const firebase_private_key_b64 = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g,'\n');
+const firebase_private_key = String(firebase_private_key_b64);
 
 admin.initializeApp({
   // credential: admin.credential.applicationDefault(),
@@ -17,6 +17,8 @@ admin.initializeApp({
 
   databaseURL: "https://bank-app-68fd5-default-rtdb.firebaseio.com",
 });
+
+console.log("env.private_key:", process.env.FIREBASE_PRIVATE_KEY);
 
 module.exports= admin; 
 

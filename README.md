@@ -22,19 +22,15 @@ Additionally, I aim to implement cookie caching attributes to prevent users from
 
 **Note 2: This app also utilizes libraries such as Bootstrap React, React-DOM, Formik, and others in both the client and server folders. Ensure you install these dependencies by running npm install in each folder (client and server).**
 
+**Note 3: To ensure the app runs well you will need to set the environment variable GOOGLE_APPLICATION_CREDENTIALS to the file path of the JSON file that contains your service account private key of your firebase project. For more intructions follow [https://firebase.google.com/docs/admin/setup#initialize-sdk](how to generate a private key file for your service account). Also set your app's Firebase project configuration, See: [https://firebase.google.com/docs/web/learn-more#config-object](here).
+
 #### Running the Application:
 
 In your CLI:
 
-- To start the client side (frontend), navigate to the client folder: `cd client`
-Then run: `npm start`
-This command runs the app in development mode.
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- To start run: `npm run start`
+Open [http://localhost:3001](http://localhost:3001) to view it in your browser.
 
-- To monitor the server side (backend), navigate to the server folder through your CLI: `cd server`
-
-Then type the following command: `node -r dotenv/config .`
-This command allows you to observe responses from the backend part of the application in action.
 
 ## Screenshots:
 
